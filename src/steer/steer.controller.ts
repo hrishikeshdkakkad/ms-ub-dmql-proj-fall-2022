@@ -7,11 +7,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth,ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { ArticleController } from 'src/article/controllers/article.controller';
-import { CreateArticleInput } from 'src/article/dtos/article-input.dto';
-import { ArticleOutput } from 'src/article/dtos/article-output.dto';
-import { ArticleService } from 'src/article/services/article.service';
+import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import {
   BaseApiResponse,
@@ -29,17 +25,14 @@ export class SteerController {
   constructor(
     private readonly steerService: SteerService,
     private readonly logger: AppLogger,
-  ) {
-    this.logger.setContext(ArticleController.name);
-  }
+  ) {}
 
-  @Post()
+  @Post('customer')
   @ApiOperation({
     summary: 'Add new Customer',
   })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: SwaggerBaseApiResponse(ArticleOutput),
   })
   @UseInterceptors(ClassSerializerInterceptor)
   // @ApiBearerAuth()
