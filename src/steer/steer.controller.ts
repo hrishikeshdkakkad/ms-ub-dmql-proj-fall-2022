@@ -18,6 +18,7 @@ import { ReqContext } from 'src/shared/request-context/req-context.decorator';
 import { RequestContext } from 'src/shared/request-context/request-context.dto';
 
 import { CustomerCreateDto } from './dtos/customer-create.dto';
+import { PopulateDto } from './dtos/populate.dto';
 import { SteerService } from './steer.service';
 
 @Controller('steer')
@@ -27,21 +28,19 @@ export class SteerController {
     private readonly logger: AppLogger,
   ) {}
 
-  @Post('customer')
+  @Post('populate')
   @ApiOperation({
-    summary: 'Add new Customer',
+    summary: 'Populate',
   })
   @ApiResponse({
     status: HttpStatus.CREATED,
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  // @ApiBearerAuth()
-  // @UseGuards(JwtAuthGuard)
-  async createCustomer(
+  async populate(
     @ReqContext() ctx: RequestContext,
-    @Body() input: CustomerCreateDto,
+    @Body() input: PopulateDto,
   ): Promise<BaseApiResponse<unknown>> {
-    const customer = await this.steerService.createCustomer(input);
-    return { data: customer, meta: {} };
+    const populate = await this.steerService.populate(input);
+    return { data: populate, meta: {} };
   }
 }

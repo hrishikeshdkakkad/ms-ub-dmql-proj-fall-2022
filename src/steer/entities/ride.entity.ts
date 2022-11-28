@@ -24,8 +24,8 @@ export class Ride {
   @ManyToOne(() => Driver, (driver) => driver.rides)
   driver: Driver;
 
-  @Column({ length: 300 })
-  address: string;
+  // @Column({ length: 300 })
+  // address: string;
 
   @CreateDateColumn()
   startTimestamp: Date;

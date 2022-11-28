@@ -1,0 +1,34 @@
+{
+  "customer": {
+    "name": "Hrishikesh",
+    "phoneNumber": "7164955666",
+    "email": "hrishidkakkad@gmail.com"
+  },
+  "car": {
+    "name": "Buggati",
+    "licenceNumber": "42k5mkl42m432",
+    "color": "Red"
+  },
+  "driver": {
+    "name": "Paul",
+    "address": "53 Springville Ave",
+    "contactNumber": "9845744554"
+  },
+  "carType": 2,
+  "rideMeta": {
+    "fromLat": "324l23;m423",
+    "toLat": "23m4kl23m4k234",
+    "frmLng": "323493u232u4023u4",
+    "toLng": "32m4kl23m4klm2332",
+    "distance": 2
+  },
+  "rating": 5,
+  "payment": {
+    "mode": "cash",
+    "totalAmount": 35
+  },
+  "ride": {
+    "startTime": "32lm4;2m23",
+    "endTime": "32m4lkm23k4m2"
+  }
+}
