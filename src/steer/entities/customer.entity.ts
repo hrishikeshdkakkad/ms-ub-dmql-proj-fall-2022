@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   OneToMany,
   PrimaryGeneratedColumn,
   Unique,
@@ -22,6 +23,7 @@ export class Customer {
   @Column({ length: 100 })
   phonenumber: string;
 
+  @Index()
   @Unique('customeremail', ['customeremail'])
   @Column({ length: 200 })
   email: string;

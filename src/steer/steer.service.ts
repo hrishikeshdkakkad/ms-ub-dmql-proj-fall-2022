@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { plainToClass, plainToInstance } from 'class-transformer';
+import { Connection } from 'typeorm';
 
 import { CustomerCreateDto } from './dtos/customer-create.dto';
 import { PopulateDto } from './dtos/populate.dto';
@@ -22,6 +23,7 @@ export class SteerService {
     private driverRepository: DriverRepository,
     private rideMetaRepository: RideMetaRepository,
     private rideRepository: RideRepository,
+    private connection: Connection,
   ) {}
 
   async createCustomer(input: CustomerCreateDto): Promise<any> {
@@ -31,30 +33,41 @@ export class SteerService {
   }
 
   async populate(input: PopulateDto) {
-    const customer = plainToInstance(Customer, input.customer);
-    console.log(customer);
-    const savedCustomer = await this.customerRepository.save(customer);
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-    const car = plainToInstance(Car, input.car);
-    console.log(car);
-    const savedCar = await this.carRepository.save(car);
+    try {
+      const customer = plainToInstance(Customer, input.customer);
+      const savedCustomer = await this.customerRepository.save(customer);
 
-    const driver = plainToInstance(Driver, input.driver);
-    console.log(driver);
-    driver.car = savedCar;
-    const savedDriver = await this.driverRepository.save(driver);
+      const car = plainToInstance(Car, input.car);
+      const savedCar = await this.carRepository.save(car);
 
-    const rideMeta = plainToInstance(RideMeta, input.rideMeta);
-    console.log(rideMeta);
-    const savedRideMeta = await this.rideMetaRepository.save(rideMeta);
+      const driver = plainToInstance(Driver, input.driver);
+      driver.car = savedCar;
+      const savedDriver = await this.driverRepository.save(driver);
 
-    const ride = plainToInstance(Ride, input.ride);
-    console.log(ride);
-    ride.customerId = savedCustomer;
-    ride.driver = savedDriver;
-    ride.rideMeta = savedRideMeta;
-    const savedRide = await this.rideRepository.save(ride);
+      const rideMeta = plainToInstance(RideMeta, input.rideMeta);
+      const savedRideMeta = await this.rideMetaRepository.save(rideMeta);
 
-    console.log(savedRide);
+      const ride = plainToInstance(Ride, input.ride);
+      ride.customerId = savedCustomer;
+      ride.driver = savedDriver;
+      ride.rideMeta = savedRideMeta;
+      const savedRide = await this.rideRepository.save(ride);
+
+      console.log(savedRide);
+      return savedRide;
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+      const error: any = {
+        status: false,
+        error: err.message,
+      };
+      return error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 }

@@ -89,11 +89,11 @@ export class PaymentDto {
 export class Ride {
   @IsString()
   @IsNotEmpty()
-  startTime: string;
+  startTimestamp: string;
 
   @IsString()
   @IsNotEmpty()
-  endTime: string;
+  endTimestamp: string;
 }
 
 export class PopulateDto {
