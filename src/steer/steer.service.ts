@@ -39,25 +39,25 @@ export class SteerService {
 
     try {
       const customer = plainToInstance(Customer, input.customer);
-      const savedCustomer = await this.customerRepository.save(customer);
+      const savedCustomer = await queryRunner.manager.save(customer);
 
       const car = plainToInstance(Car, input.car);
-      const savedCar = await this.carRepository.save(car);
+      const savedCar = await queryRunner.manager.save(car);
 
       const driver = plainToInstance(Driver, input.driver);
       driver.car = savedCar;
-      const savedDriver = await this.driverRepository.save(driver);
+      const savedDriver = await queryRunner.manager.save(driver);
 
       const rideMeta = plainToInstance(RideMeta, input.rideMeta);
-      const savedRideMeta = await this.rideMetaRepository.save(rideMeta);
+      const savedRideMeta = await queryRunner.manager.save(rideMeta);
 
       const ride = plainToInstance(Ride, input.ride);
       ride.customerId = savedCustomer;
       ride.driver = savedDriver;
       ride.rideMeta = savedRideMeta;
-      const savedRide = await this.rideRepository.save(ride);
+      const savedRide = await queryRunner.manager.save(ride);
 
-      console.log(savedRide);
+      await queryRunner.commitTransaction();
       return savedRide;
     } catch (err) {
       await queryRunner.rollbackTransaction();

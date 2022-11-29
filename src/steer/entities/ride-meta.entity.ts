@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('rideMeta')
+@Entity('ridemeta')
 export class RideMeta {
   @PrimaryGeneratedColumn('increment')
   id: number;
