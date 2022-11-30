@@ -7,6 +7,8 @@ import { PopulateDto } from './dtos/populate.dto';
 import { Car } from './entities/car.entity';
 import { Customer } from './entities/customer.entity';
 import { Driver } from './entities/driver.entity';
+import { Payment } from './entities/payment.entity';
+import { Rating } from './entities/rating.entity';
 import { Ride } from './entities/ride.entity';
 import { RideMeta } from './entities/ride-meta.entity';
 import { CarRepository } from './repositories/car.repository';
@@ -56,6 +58,14 @@ export class SteerService {
       ride.driver = savedDriver;
       ride.rideMeta = savedRideMeta;
       const savedRide = await queryRunner.manager.save(ride);
+
+      const payment = plainToInstance(Payment, input.payment);
+      payment.ride = ride;
+      await queryRunner.manager.save(payment);
+
+      const rating = plainToInstance(Rating, input.rating);
+      rating.ride = ride;
+      await queryRunner.manager.save(rating);
 
       await queryRunner.commitTransaction();
       return savedRide;

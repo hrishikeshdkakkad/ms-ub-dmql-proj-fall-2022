@@ -83,7 +83,7 @@ export class PaymentDto {
 
   @IsNumber()
   @IsNotEmpty()
-  totalAmount: number;
+  amount: number;
 }
 
 export class Ride {
@@ -94,6 +94,16 @@ export class Ride {
   @IsString()
   @IsNotEmpty()
   endTimestamp: string;
+}
+
+export class Rating {
+  @IsNumber()
+  @IsNotEmpty()
+  rating: number;
+
+  @IsString()
+  @IsNotEmpty()
+  comment: string;
 }
 
 export class PopulateDto {
@@ -125,9 +135,10 @@ export class PopulateDto {
   @IsNotEmpty()
   rideMeta: RideMeta;
 
-  @IsNumber()
   @IsNotEmpty()
-  rating: number;
+  @ValidateNested()
+  @Type(() => Rating)
+  rating: Rating;
 
   @ApiProperty()
   @ValidateNested()

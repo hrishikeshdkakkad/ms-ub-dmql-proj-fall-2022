@@ -8,8 +8,8 @@ import {
 
 import { Ride } from './ride.entity';
 
-@Entity('payment')
-export class Payment {
+@Entity('rating')
+export class Rating {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -18,8 +18,8 @@ export class Payment {
   ride: Ride;
 
   @Column()
-  mode: string;
+  rating: number;
 
   @Column()
-  amount: number;
+  comment: string;
 }
